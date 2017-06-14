@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TODO App</title>
+
+    <style type="text/css">
+    * {
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+    form, h1, h2, p, ul {
+      margin-left: 10%;
+      width: 80%;
+    }
+    form {
+      padding: 1rem;
+      border: 1px gray solid;
+    }
+    label:after {
+      content: "";
+      display: table;
+      margin-bottom: 1rem;
+    }
+    select {
+      display: table;
+      margin: 1rem 0 1rem 0;
+    }
+    h2 {
+      color: green;
+      text-decoration: underline;
+    }
+    .task-box li {
+      padding: .5rem;
+    }
+  </style>
+
+  </head>
+  <body>
+    <h1>TODO App</h1>
+    <p>Enter task information and submit to create a task list. Submit as many tasks as you like!</p>
+    <form name="task" action="index.html" method="post">
+      <label>
+        What is the task?
+        <input type="text" name="task">
+      </label>
+
+      <fieldset>
+        <legend>Who is the task assigned to? </legend>
+        <label>
+          <input type="radio" name="taskDoer" value="Jeremy">
+          Jeremy
+        </label>
+        <label>
+          <input type="radio" name="taskDoer" value="Jennifer">
+          Jennifer
+        </label>
+        <label>
+          <input type="radio" name="taskDoer" value="Sid">
+          Sid
+        </label>
+      </fieldset>
+
+      <select class="" name="taskDifficulty">
+        <option value="">Select task difficulty</option>
+        <option value="easy">Easy</option>
+        <option value="moderate">Moderate</option>
+        <option value="hard">Hard</option>
+      </select>
+
+      <input type="submit">
+    </form>
+
+    <div id="task-list" class="task-box"></div>
+
+    <script type="text/javascript">
+    var tasks = [];
+
+    function drawTasks() {
+      event.preventDefault();
+
+      var parent = document.getElementById('task-list');
+
+      //clear out existing contents
+      parent.innerHTML = "";
+
+      //create a <h2> node
+      var h2 = document.createElement("h2");
+
+      // create a <ul> node
+      var ul = document.createElement("ul");
+
+      for (var i = 0; i < tasks.length; i++) {
+
+      // create an <li> node
+      var li = document.createElement("li");
+
+      // add the task string to the li
+      li.innerHTML = "<strong>task:</strong> "+tasks[i].task+", <strong>assigned to:</strong> "+tasks[i].taskDoer+", <strong>difficulty level:</strong> "+tasks[i].taskDifficulty;
+
+      // add h2
+      h2.innerHTML = "TASK LIST";
+
+      // append li to ul
+      ul.appendChild(li);
+      }
+
+      // append the h2 and ul to the #task container
+      parent.appendChild(h2);
+      parent.appendChild(ul);
+    }
+
+    function getTasks() {
+      event.preventDefault();
+
+      var form = document.querySelector("form");
+
+      // create a new task object with form values
+      var newTasks = {
+        task: form.task.value,
+        taskDoer: form.taskDoer.value,
+        taskDifficulty: form.taskDifficulty.value}
+
+      // insert new tasks object into tasks
+      tasks.push(newTasks);
+
+      drawTasks();
+
+      //clear the form
+      form.reset();
+    }
+
+    window.onload = function() {
+      drawTasks();
+      var form = document.querySelector("form");
+      form.onsubmit = getTasks;
+    }
+    </script>
+  </body>
+</html>
